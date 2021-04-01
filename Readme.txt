@@ -20,6 +20,7 @@ Prerequisites:
 
 String^ constring = L"datasource= localhost;port=3306;username=root;password= your password";
 
+3. To create database and table look for Sql queries in DemoRecord.sql file. Please use code present in it otherwise application wont work.
 thats it you are good to go now......Thanks
 
 
