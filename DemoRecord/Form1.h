@@ -7,7 +7,7 @@ namespace CppCLRWinformsProjekt {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	//Adding MySqL connection
+	//VP-Adding MySqL connection
 	using namespace MySql::Data::MySqlClient;
 	/// <summary>
 	/// Zusammenfassung für Form1
@@ -21,16 +21,18 @@ namespace CppCLRWinformsProjekt {
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
-			//VP- Restrict entry of text in no text and gendertext to max value
+			//VP-set focus on personal_no text box
 			notext->Focus();
+			//VP- Restrict entry of text in no text and gendertext to max value
 			notext->MaxLength = 10;
 			gendertext->MaxLength = 1;
 			hobbiestext->MaxLength = 1000;
 			langtext->MaxLength = 40;
+			//VP- Display date and time
 			DateTime datetime = DateTime::Now;
 			lbl_datetime->Text = datetime.ToString();
+			//VP- start timer1 tick for current date and time
 			timer1->Start();
-
 		}
 
 	protected:
@@ -45,9 +47,6 @@ namespace CppCLRWinformsProjekt {
 			}
 		}
 	private: System::Windows::Forms::TextBox^ notext;
-
-
-
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label3;
@@ -57,17 +56,10 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::TextBox^ gendertext;
 	private: System::Windows::Forms::TextBox^ langtext;
 	private: System::Windows::Forms::TextBox^ hobbiestext;
-
-
-
-
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::Button^ Save;
-
 	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::TextBox^ searchtext;
-
-
 	private: System::Windows::Forms::Button^ Search;
 	private: System::Windows::Forms::Label^ status_lbl;
 	private: System::Windows::Forms::ImageList^ imageList1;
@@ -78,22 +70,11 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::Label^ label8;
 	private: System::Windows::Forms::ProgressBar^ pbarstatus;
 	private: System::Windows::Forms::Timer^ timer2;
-
-
-
-
 	private: System::ComponentModel::IContainer^ components;
-
-
-
-	protected:
-
 	private:
 		/// <summary>
 		/// Erforderliche Designervariable.
-		/// </summary>
-
-
+		/// </summary
 #pragma region Windows Form Designer generated code
 		/// <summary>
 		/// Erforderliche Methode für die Designerunterstützung.
@@ -423,21 +404,29 @@ namespace CppCLRWinformsProjekt {
 		}
 #pragma endregion
 	private: System::Void Search_Click(System::Object^ sender, System::EventArgs^ e) {
-
-		String^ constring = "datasource= localhost;port=3306;username=root;password=Incredible1!";
+		//VP- the connection string which has information to connect to database
+		String^ constring = "datasource= localhost;port=3306;username=root;password=type your sql root user password";
+		//VP- SQL Query to perform action on table
 		String^ myQuery = L"select * from example.candidateinfo where (Name='" + this->searchtext->Text + "');";
+		//VP- Initialize connection object
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
+		//VP- Initialize command/query object
 		MySqlCommand^ cmdDatabase = gcnew MySqlCommand(myQuery, conDatabase);
+		//VP- Initialize command reader object
 		MySqlDataReader^ myReader;
 		try {
 			conDatabase->Open();
+			//VP-Execute the query using Reader
 			myReader = cmdDatabase->ExecuteReader();
+			//VP- If nothing to fetch
 			if (!(myReader->Read()))
 			{
+				//VP- If search text box is empty
 				if (searchtext->Text == "")
 				{
 					MessageBox::Show("No input to search", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				}
+				//VP- If no record found
 				else
 				{
 					MessageBox::Show("Record not found. Try again", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -470,7 +459,7 @@ namespace CppCLRWinformsProjekt {
 	}
 	private: System::Void Save_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		String^ constring = L"datasource= localhost;port=3306;username=root;password=Incredible1!";
+		String^ constring = L"datasource= localhost;port=3306;username=root;password=type your sql root user password";
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
 		if ((notext->Text == "") || (nametext->Text == "") || (gendertext->Text == "") || (langtext->Text == "") || (hobbiestext->Text == ""))
 		{
@@ -486,7 +475,9 @@ namespace CppCLRWinformsProjekt {
 			try {
 				conDatabase->Open();
 				myReader = cmdDatabase->ExecuteReader();
+				//VP- Duplicate flag
 				bool bDuplicate_count = false;
+				//VP-Check for duplicate records
 				while (myReader->Read())
 				{
 					if ((nametext->Text == (myReader->GetString(1))) || (notext->Text == System::Convert::ToString(myReader->GetInt64(0))))
@@ -498,7 +489,7 @@ namespace CppCLRWinformsProjekt {
 					}
 					break;
 				}
-
+				//VP- If no duplicate record found
 				if (!bDuplicate_count)
 				{
 					//VP- make progress bar visible and start timer2 tick
@@ -506,11 +497,13 @@ namespace CppCLRWinformsProjekt {
 					pbarstatus->Visible = true;
 					//Close previous command reader
 					myReader->Close();
-
 					//Store date into table
 					String^ saveQuery = L"insert into example.candidateinfo values('" + this->notext->Text + "','" + this->nametext->Text + "','" + this->gendertext->Text + "','" + this->langtext->Text + "','" + this->hobbiestext->Text + "');";
+					//VP-Initialize new command Reader
 					MySqlCommand^ cmdSave = gcnew MySqlCommand(saveQuery, conDatabase);
+					//VP-Execute query
 					myReader = cmdSave->ExecuteReader();
+					//VP- Reset all text boxes after successful save
 					notext->ResetText();
 					nametext->ResetText();
 					gendertext->ResetText();
@@ -527,13 +520,14 @@ namespace CppCLRWinformsProjekt {
 		}
 		conDatabase->Close();
 	}
+	//VP- Added functionality to show current date and time
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 		DateTime datetime = DateTime::Now;
 		lbl_datetime->Text = datetime.ToString();
 	}
 	private: System::Void timer2_Tick(System::Object^ sender, System::EventArgs^ e) {
-		//VP- If Progress bar is visible then increment it to max\
-		and then make it invisible
+		/*VP-If Progress bar is visible then increment it to max
+		and then make it invisible*/
 		if ((this->pbarstatus->Visible) == true)
 		{
 			pbarstatus->Increment(15);
@@ -545,7 +539,6 @@ namespace CppCLRWinformsProjekt {
 			}
 		}
 	}
-
-};
+	};
 
 }
