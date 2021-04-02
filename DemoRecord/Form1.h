@@ -113,6 +113,7 @@ namespace CppCLRWinformsProjekt {
 			// notext
 			// 
 			this->notext->BackColor = System::Drawing::SystemColors::Info;
+			this->notext->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->notext->ForeColor = System::Drawing::Color::Green;
 			this->notext->Location = System::Drawing::Point(186, 37);
 			this->notext->Name = L"notext";
@@ -192,6 +193,7 @@ namespace CppCLRWinformsProjekt {
 			// nametext
 			// 
 			this->nametext->BackColor = System::Drawing::SystemColors::Info;
+			this->nametext->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->nametext->ForeColor = System::Drawing::Color::Green;
 			this->nametext->Location = System::Drawing::Point(186, 94);
 			this->nametext->Name = L"nametext";
@@ -201,6 +203,7 @@ namespace CppCLRWinformsProjekt {
 			// gendertext
 			// 
 			this->gendertext->BackColor = System::Drawing::SystemColors::Info;
+			this->gendertext->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->gendertext->ForeColor = System::Drawing::Color::Green;
 			this->gendertext->Location = System::Drawing::Point(186, 142);
 			this->gendertext->Name = L"gendertext";
@@ -210,6 +213,7 @@ namespace CppCLRWinformsProjekt {
 			// langtext
 			// 
 			this->langtext->BackColor = System::Drawing::SystemColors::Info;
+			this->langtext->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->langtext->ForeColor = System::Drawing::Color::Green;
 			this->langtext->Location = System::Drawing::Point(186, 194);
 			this->langtext->Multiline = true;
@@ -220,6 +224,7 @@ namespace CppCLRWinformsProjekt {
 			// hobbiestext
 			// 
 			this->hobbiestext->BackColor = System::Drawing::SystemColors::Info;
+			this->hobbiestext->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->hobbiestext->ForeColor = System::Drawing::Color::Green;
 			this->hobbiestext->Location = System::Drawing::Point(186, 254);
 			this->hobbiestext->Multiline = true;
@@ -266,6 +271,7 @@ namespace CppCLRWinformsProjekt {
 			// searchtext
 			// 
 			this->searchtext->BackColor = System::Drawing::SystemColors::Info;
+			this->searchtext->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->searchtext->Location = System::Drawing::Point(229, 139);
 			this->searchtext->Name = L"searchtext";
 			this->searchtext->Size = System::Drawing::Size(136, 24);
@@ -374,7 +380,7 @@ namespace CppCLRWinformsProjekt {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(771, 437);
+			this->ClientSize = System::Drawing::Size(771, 421);
 			this->Controls->Add(this->label8);
 			this->Controls->Add(this->lbl_datetime);
 			this->Controls->Add(this->groupBox1);
@@ -393,6 +399,7 @@ namespace CppCLRWinformsProjekt {
 			this->DoubleBuffered = true;
 			this->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(128)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Name = L"Form1";
 			this->Text = L"Database";
 			this->TransparencyKey = System::Drawing::SystemColors::Window;
@@ -405,7 +412,7 @@ namespace CppCLRWinformsProjekt {
 #pragma endregion
 	private: System::Void Search_Click(System::Object^ sender, System::EventArgs^ e) {
 		//VP- the connection string which has information to connect to database
-		String^ constring = "datasource= localhost;port=3306;username=root;password=type your sql root user password";
+		String^ constring = "datasource= localhost;port=3306;username=root;password=Incredible1!";
 		//VP- SQL Query to perform action on table
 		String^ myQuery = L"select * from example.candidateinfo where (Name='" + this->searchtext->Text + "');";
 		//VP- Initialize connection object
@@ -459,7 +466,7 @@ namespace CppCLRWinformsProjekt {
 	}
 	private: System::Void Save_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		String^ constring = L"datasource= localhost;port=3306;username=root;password=type your sql root user password";
+		String^ constring = L"datasource= localhost;port=3306;username=root;password=Incredible1!";
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
 		if ((notext->Text == "") || (nametext->Text == "") || (gendertext->Text == "") || (langtext->Text == "") || (hobbiestext->Text == ""))
 		{
@@ -535,10 +542,13 @@ namespace CppCLRWinformsProjekt {
 			{
 				timer2->Stop();
 				pbarstatus->Visible = false;
+				//VP- Reset the progress bar to default
 				pbarstatus->Value = 0;
 			}
 		}
 	}
+
+
 	};
 
 }
