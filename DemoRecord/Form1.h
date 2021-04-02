@@ -539,8 +539,6 @@ namespace CppCLRWinformsProjekt {
 			}
 		}
 	}
-
-
 	};
 
 }
