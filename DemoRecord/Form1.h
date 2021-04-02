@@ -374,7 +374,7 @@ namespace CppCLRWinformsProjekt {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(771, 437);
+			this->ClientSize = System::Drawing::Size(771, 421);
 			this->Controls->Add(this->label8);
 			this->Controls->Add(this->lbl_datetime);
 			this->Controls->Add(this->groupBox1);
@@ -395,7 +395,6 @@ namespace CppCLRWinformsProjekt {
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->Name = L"Form1";
 			this->Text = L"Database";
-			this->TransparencyKey = System::Drawing::SystemColors::Window;
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
@@ -535,6 +534,7 @@ namespace CppCLRWinformsProjekt {
 			{
 				timer2->Stop();
 				pbarstatus->Visible = false;
+				//VP- Reset the progress bar to default
 				pbarstatus->Value = 0;
 			}
 		}
