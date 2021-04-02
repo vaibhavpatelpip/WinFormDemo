@@ -10,7 +10,7 @@ namespace CppCLRWinformsProjekt {
 	//VP-Adding MySqL connection
 	using namespace MySql::Data::MySqlClient;
 	/// <summary>
-	/// Zusammenfassung für Form1
+	/// Zusammenfassung fÃ¼r Form1
 	/// </summary>
 	public ref class Form1 : public System::Windows::Forms::Form
 	{
@@ -19,7 +19,7 @@ namespace CppCLRWinformsProjekt {
 		{
 			InitializeComponent();
 			//
-			//TODO: Konstruktorcode hier hinzufügen.
+			//TODO: Konstruktorcode hier hinzufÃ¼gen.
 			//
 			//VP-set focus on personal_no text box
 			notext->Focus();
@@ -77,8 +77,8 @@ namespace CppCLRWinformsProjekt {
 		/// </summary
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung.
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Erforderliche Methode fÃ¼r die DesignerunterstÃ¼tzung.
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geÃ¤ndert werden.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -439,7 +439,7 @@ namespace CppCLRWinformsProjekt {
 				pbarstatus->Visible = true;
 
 				//VP- Fetches record by column(index)
-				notext->Text = System::Convert::ToString(myReader->GetInt64(0));
+				notext->Text = myReader->GetString(0);
 				nametext->Text = myReader->GetString(1);
 				gendertext->Text = myReader->GetString(2);
 				langtext->Text = myReader->GetString(3);
@@ -447,6 +447,7 @@ namespace CppCLRWinformsProjekt {
 				status_lbl->Text = "Record found";
 			}
 			searchtext->Focus();
+			//VP- Close database connection
 			conDatabase->Close();
 
 		}
@@ -457,9 +458,12 @@ namespace CppCLRWinformsProjekt {
 
 	}
 	private: System::Void Save_Click(System::Object^ sender, System::EventArgs^ e) {
-
-		String^ constring = L"datasource= localhost;port=3306;username=root;password=type your sql root user password";
+		//VP- the connection string which has information to connect to database
+		String^ constring = L"datasource= localhost;port=3306;username=root;password=Incredible1!";
+		//VP- Initialize connection object
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
+		//VP- Initialize command/query object
+		MySqlCommand^ cmdDatabase;
 		if ((notext->Text == "") || (nametext->Text == "") || (gendertext->Text == "") || (langtext->Text == "") || (hobbiestext->Text == ""))
 		{
 			MessageBox::Show("Please provide all the fields", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
@@ -469,17 +473,20 @@ namespace CppCLRWinformsProjekt {
 		else
 		{
 			String^ myQuery = L"select * from example.candidateinfo where (Name='" + this->nametext->Text + "' or Personal_No='" + this->notext->Text + "') ;";
-			MySqlCommand^ cmdDatabase = gcnew MySqlCommand(myQuery, conDatabase);
+			//VP- Assign sql query to command object
+			cmdDatabase = gcnew MySqlCommand(myQuery, conDatabase);
+			//VP- Initialize command reader object
 			MySqlDataReader^ myReader;
 			try {
 				conDatabase->Open();
+				//VP- Execute the command
 				myReader = cmdDatabase->ExecuteReader();
 				//VP- Duplicate flag
 				bool bDuplicate_count = false;
 				//VP-Check for duplicate records
 				while (myReader->Read())
 				{
-					if ((nametext->Text == (myReader->GetString(1))) || (notext->Text == System::Convert::ToString(myReader->GetInt64(0))))
+					if ((nametext->Text == (myReader->GetString(1))) || (notext->Text ==(myReader->GetString(0))))
 					{
 						MessageBox::Show("Duplicate Record already exists. Cannot Save", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 						notext->Focus();
@@ -499,9 +506,9 @@ namespace CppCLRWinformsProjekt {
 					//Store date into table
 					String^ saveQuery = L"insert into example.candidateinfo values('" + this->notext->Text + "','" + this->nametext->Text + "','" + this->gendertext->Text + "','" + this->langtext->Text + "','" + this->hobbiestext->Text + "');";
 					//VP-Initialize new command Reader
-					MySqlCommand^ cmdSave = gcnew MySqlCommand(saveQuery, conDatabase);
+					cmdDatabase = gcnew MySqlCommand(saveQuery, conDatabase);
 					//VP-Execute query
-					myReader = cmdSave->ExecuteReader();
+					myReader = cmdDatabase->ExecuteReader();
 					//VP- Reset all text boxes after successful save
 					notext->ResetText();
 					nametext->ResetText();
@@ -517,6 +524,7 @@ namespace CppCLRWinformsProjekt {
 				MessageBox::Show(exp->Message);
 			}
 		}
+		//VP- close the database connection
 		conDatabase->Close();
 	}
 	//VP- Added functionality to show current date and time
