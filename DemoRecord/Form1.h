@@ -459,7 +459,7 @@ namespace CppCLRWinformsProjekt {
 	}
 	private: System::Void Save_Click(System::Object^ sender, System::EventArgs^ e) {
 		//VP- the connection string which has information to connect to database
-		String^ constring = L"datasource= localhost;port=3306;username=root;password=Incredible1!";
+		String^ constring = L"datasource= localhost;port=3306;username=root;password=type your sql root user password";
 		//VP- Initialize connection object
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
 		//VP- Initialize command/query object
