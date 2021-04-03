@@ -404,84 +404,92 @@ namespace CppCLRWinformsProjekt {
 #pragma endregion
 	private: System::Void Search_Click(System::Object^ sender, System::EventArgs^ e) {
 		//VP- the connection string which has information to connect to database
-		String^ constring = "datasource= localhost;port=3306;username=root;password=type your sql root user password";
+		String^ constring = "datasource= localhost;port=3306;username=root;password=Incredible1!";
 		//VP- SQL Query to perform action on table
-		String^ myQuery = L"select * from example.candidateinfo where (Name='" + this->searchtext->Text + "');";
+		String^ myQuery = L"select * from example.candidateinfo where (Name LIKE'" + this->searchtext->Text + "%');";
 		//VP- Initialize connection object
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
 		//VP- Initialize command/query object
 		MySqlCommand^ cmdDatabase = gcnew MySqlCommand(myQuery, conDatabase);
 		//VP- Initialize command reader object
 		MySqlDataReader^ myReader;
-		try {
-			conDatabase->Open();
-			//VP-Execute the query using Reader
-			myReader = cmdDatabase->ExecuteReader();
-			//VP- If nothing to fetch
-			if (!(myReader->Read()))
-			{
-				//VP- If search text box is empty
-				if (searchtext->Text == "")
+		//VP- If search text box is empty
+		if (searchtext->Text == "")
+		{
+			MessageBox::Show("No input to search", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+		else
+		{
+			try {
+				conDatabase->Open();
+				//VP-Execute the query using Reader
+				myReader = cmdDatabase->ExecuteReader();
+				//VP- If nothing to fetch
+				if (!(myReader->Read()))
 				{
-					MessageBox::Show("No input to search", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+
+					//VP- If no record found
+					MessageBox::Show("Record not found. Try again", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					status_lbl->ResetText();
 				}
-				//VP- If no record found
 				else
 				{
-					MessageBox::Show("Record not found. Try again", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					//VP- make progress bar visible and start time tick
+					timer2->Start();
+					pbarstatus->Visible = true;
+
+					//VP- Fetches record by column(index)
+					notext->Text = myReader->GetString(0);
+					nametext->Text = myReader->GetString(1);
+					gendertext->Text = myReader->GetString(2);
+					langtext->Text = myReader->GetString(3);
+					hobbiestext->Text = myReader->GetString(4);
+					status_lbl->Text = "Record found";
 				}
-				status_lbl->ResetText();
+				searchtext->Focus();
+				conDatabase->Close();
+
 			}
-			else
+			catch (Exception^ exp)
 			{
-				//VP- make progress bar visible and start time tick
-				timer2->Start();
-				pbarstatus->Visible = true;
-
-				//VP- Fetches record by column(index)
-				notext->Text = System::Convert::ToString(myReader->GetInt64(0));
-				nametext->Text = myReader->GetString(1);
-				gendertext->Text = myReader->GetString(2);
-				langtext->Text = myReader->GetString(3);
-				hobbiestext->Text = myReader->GetString(4);
-				status_lbl->Text = "Record found";
+				MessageBox::Show(exp->Message);
 			}
-			searchtext->Focus();
-			conDatabase->Close();
-
 		}
-		catch (Exception^ exp)
-		{
-			MessageBox::Show(exp->Message);
-		}
-
 	}
 	private: System::Void Save_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		String^ constring = L"datasource= localhost;port=3306;username=root;password=type your sql root user password";
+		String^ constring = L"datasource= localhost;port=3306;username=root;password=Incredible1!";
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
+		MySqlCommand^ cmdDatabase;
+		//VP- Duplicate flag
+		bool bDuplicate_count = false;
 		if ((notext->Text == "") || (nametext->Text == "") || (gendertext->Text == "") || (langtext->Text == "") || (hobbiestext->Text == ""))
 		{
 			MessageBox::Show("Please provide all the fields", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			notext->Focus();
 			status_lbl->ResetText();
 		}
+		//VP- If personal no is less than 10 digits then show error
+		else if(notext->TextLength < 10)
+		{
+			MessageBox::Show("Personal no must have 10 digits", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			notext->Focus();
+			status_lbl->ResetText();
+		}
 		else
 		{
 			String^ myQuery = L"select * from example.candidateinfo where (Name='" + this->nametext->Text + "' or Personal_No='" + this->notext->Text + "') ;";
-			MySqlCommand^ cmdDatabase = gcnew MySqlCommand(myQuery, conDatabase);
+			cmdDatabase = gcnew MySqlCommand(myQuery, conDatabase);
 			MySqlDataReader^ myReader;
 			try {
 				conDatabase->Open();
 				myReader = cmdDatabase->ExecuteReader();
-				//VP- Duplicate flag
-				bool bDuplicate_count = false;
 				//VP-Check for duplicate records
 				while (myReader->Read())
 				{
-					if ((nametext->Text == (myReader->GetString(1))) || (notext->Text == System::Convert::ToString(myReader->GetInt64(0))))
+					if ((nametext->Text == (myReader->GetString(1))) || (notext->Text ==(myReader->GetString(0))))
 					{
-						MessageBox::Show("Duplicate Record already exists. Cannot Save", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+						MessageBox::Show("Cannot Save!Duplicate Record already exists\nBoth Name and No should be unique", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 						notext->Focus();
 						bDuplicate_count = true;
 						status_lbl->ResetText();
@@ -499,9 +507,9 @@ namespace CppCLRWinformsProjekt {
 					//Store date into table
 					String^ saveQuery = L"insert into example.candidateinfo values('" + this->notext->Text + "','" + this->nametext->Text + "','" + this->gendertext->Text + "','" + this->langtext->Text + "','" + this->hobbiestext->Text + "');";
 					//VP-Initialize new command Reader
-					MySqlCommand^ cmdSave = gcnew MySqlCommand(saveQuery, conDatabase);
+					cmdDatabase = gcnew MySqlCommand(saveQuery, conDatabase);
 					//VP-Execute query
-					myReader = cmdSave->ExecuteReader();
+					myReader = cmdDatabase->ExecuteReader();
 					//VP- Reset all text boxes after successful save
 					notext->ResetText();
 					nametext->ResetText();
@@ -540,5 +548,5 @@ namespace CppCLRWinformsProjekt {
 		}
 	}
 	};
-
 }
+
