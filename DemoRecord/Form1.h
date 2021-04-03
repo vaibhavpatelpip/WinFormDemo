@@ -464,9 +464,18 @@ namespace CppCLRWinformsProjekt {
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
 		//VP- Initialize command/query object
 		MySqlCommand^ cmdDatabase;
+		//VP- Duplicate flag
+		bool bDuplicate_count = false;
 		if ((notext->Text == "") || (nametext->Text == "") || (gendertext->Text == "") || (langtext->Text == "") || (hobbiestext->Text == ""))
 		{
 			MessageBox::Show("Please provide all the fields", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			notext->Focus();
+			status_lbl->ResetText();
+		}
+		//VP- If personal no is less than 10 digits then show error
+		else if(notext->TextLength < 10)
+		{
+			MessageBox::Show("Personal no must have 10 digits", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			notext->Focus();
 			status_lbl->ResetText();
 		}
@@ -481,14 +490,12 @@ namespace CppCLRWinformsProjekt {
 				conDatabase->Open();
 				//VP- Execute the command
 				myReader = cmdDatabase->ExecuteReader();
-				//VP- Duplicate flag
-				bool bDuplicate_count = false;
 				//VP-Check for duplicate records
 				while (myReader->Read())
 				{
 					if ((nametext->Text == (myReader->GetString(1))) || (notext->Text ==(myReader->GetString(0))))
 					{
-						MessageBox::Show("Duplicate Record already exists. Cannot Save", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+						MessageBox::Show("Cannot Save!Duplicate Record already exists\nBoth Name and No should be unique", "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
 						notext->Focus();
 						bDuplicate_count = true;
 						status_lbl->ResetText();
