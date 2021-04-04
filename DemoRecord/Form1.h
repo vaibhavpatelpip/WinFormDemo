@@ -10,7 +10,7 @@ namespace CppCLRWinformsProjekt {
 	//VP-Adding MySqL connection
 	using namespace MySql::Data::MySqlClient;
 	/// <summary>
-	/// Zusammenfassung für Form1
+	/// Zusammenfassung fÃ¼r Form1
 	/// </summary>
 	public ref class Form1 : public System::Windows::Forms::Form
 	{
@@ -19,7 +19,7 @@ namespace CppCLRWinformsProjekt {
 		{
 			InitializeComponent();
 			//
-			//TODO: Konstruktorcode hier hinzufügen.
+			//TODO: Konstruktorcode hier hinzufÃ¼gen.
 			//
 			//VP-set focus on personal_no text box
 			notext->Focus();
@@ -80,8 +80,8 @@ namespace CppCLRWinformsProjekt {
 		/// </summary
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung.
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Erforderliche Methode fÃ¼r die DesignerunterstÃ¼tzung.
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geÃ¤ndert werden.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -407,7 +407,7 @@ namespace CppCLRWinformsProjekt {
 #pragma endregion
 	private: System::Void btn_Search_Click(System::Object^ sender, System::EventArgs^ e) {
 		//VP- the connection string which has information to connect to database
-		String^ constring = "datasource= localhost;port=3306;username=root;password=Incredible1!";
+		String^ constring = "datasource= localhost;port=3306;username=root;password=type your sql root user password";
 		//VP- SQL Query to perform action on table
 		String^ myQuery = L"select * from example.candidateinfo where (Name LIKE'%" + this->searchtext->Text + "%');";
 		//VP- Initialize connection object
@@ -440,7 +440,6 @@ namespace CppCLRWinformsProjekt {
 					//VP- make progress bar visible and start time tick
 					timer2->Start();
 					pbarstatus->Visible = true;
-
 					//VP- Fetches record by column(index)
 					notext->Text = myReader->GetString(0);
 					nametext->Text = myReader->GetString(1);
@@ -449,9 +448,10 @@ namespace CppCLRWinformsProjekt {
 					hobbiestext->Text = myReader->GetString(4);
 					status_lbl->Text = "Record found";
 				}
+        //VP- Set cursor on search textbox
 				searchtext->Focus();
+        //VP- Close connection to database
 				conDatabase->Close();
-
 			}
 			catch (Exception^ exp)
 			{
@@ -460,9 +460,11 @@ namespace CppCLRWinformsProjekt {
 		}
 	}
 	private: System::Void btn_Save_Click(System::Object^ sender, System::EventArgs^ e) {
-
-		String^ constring = L"datasource= localhost;port=3306;username=root;password=Incredible1!";
+    //VP- the connection string which has information to connect to database
+		String^ constring = L"datasource= localhost;port=3306;username=root;password=type your sql root user password";
+    //VP- Initialize connection object
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
+		//VP- Initialize command/query object
 		MySqlCommand^ cmdDatabase;
 		//VP- Duplicate flag
 		bool bDuplicate_count = false;
@@ -482,10 +484,13 @@ namespace CppCLRWinformsProjekt {
 		else
 		{
 			String^ myQuery = L"select * from example.candidateinfo where (Name='" + this->nametext->Text + "' or Personal_No='" + this->notext->Text + "') ;";
+      //VP- Assign sql query to command object
 			cmdDatabase = gcnew MySqlCommand(myQuery, conDatabase);
+			//VP- Initialize command reader object
 			MySqlDataReader^ myReader;
 			try {
 				conDatabase->Open();
+				//VP- Execute the command
 				myReader = cmdDatabase->ExecuteReader();
 				//VP-Check for duplicate records
 				while (myReader->Read())
@@ -528,6 +533,7 @@ namespace CppCLRWinformsProjekt {
 				MessageBox::Show(exp->Message);
 			}
 		}
+		//VP- close the database connection
 		conDatabase->Close();
 	}
 	//VP- Added functionality to show current date and time
