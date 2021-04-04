@@ -57,10 +57,13 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::TextBox^ langtext;
 	private: System::Windows::Forms::TextBox^ hobbiestext;
 	private: System::Windows::Forms::Label^ label6;
-	private: System::Windows::Forms::Button^ Save;
+	private: System::Windows::Forms::Button^ btn_Save;
+
+
 	private: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::TextBox^ searchtext;
-	private: System::Windows::Forms::Button^ Search;
+	private: System::Windows::Forms::Button^ btn_Search;
+
 	private: System::Windows::Forms::Label^ status_lbl;
 	private: System::Windows::Forms::ImageList^ imageList1;
 	private: System::Windows::Forms::Label^ lbl_Gender;
@@ -94,10 +97,10 @@ namespace CppCLRWinformsProjekt {
 			this->langtext = (gcnew System::Windows::Forms::TextBox());
 			this->hobbiestext = (gcnew System::Windows::Forms::TextBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->Save = (gcnew System::Windows::Forms::Button());
+			this->btn_Save = (gcnew System::Windows::Forms::Button());
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->searchtext = (gcnew System::Windows::Forms::TextBox());
-			this->Search = (gcnew System::Windows::Forms::Button());
+			this->btn_Search = (gcnew System::Windows::Forms::Button());
 			this->status_lbl = (gcnew System::Windows::Forms::Label());
 			this->imageList1 = (gcnew System::Windows::Forms::ImageList(this->components));
 			this->lbl_Gender = (gcnew System::Windows::Forms::Label());
@@ -118,6 +121,7 @@ namespace CppCLRWinformsProjekt {
 			this->notext->Name = L"notext";
 			this->notext->Size = System::Drawing::Size(172, 20);
 			this->notext->TabIndex = 0;
+			this->notext->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Form1::notext_KeyPress);
 			// 
 			// label1
 			// 
@@ -212,7 +216,6 @@ namespace CppCLRWinformsProjekt {
 			this->langtext->BackColor = System::Drawing::SystemColors::Info;
 			this->langtext->ForeColor = System::Drawing::Color::Green;
 			this->langtext->Location = System::Drawing::Point(186, 194);
-			this->langtext->Multiline = true;
 			this->langtext->Name = L"langtext";
 			this->langtext->Size = System::Drawing::Size(172, 20);
 			this->langtext->TabIndex = 11;
@@ -238,19 +241,19 @@ namespace CppCLRWinformsProjekt {
 			this->label6->TabIndex = 13;
 			this->label6->Text = L"Max 1000 characters";
 			// 
-			// Save
+			// btn_Save
 			// 
-			this->Save->Font = (gcnew System::Drawing::Font(L"Britannic Bold", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btn_Save->Font = (gcnew System::Drawing::Font(L"Britannic Bold", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Save->ForeColor = System::Drawing::Color::Maroon;
-			this->Save->ImageAlign = System::Drawing::ContentAlignment::TopLeft;
-			this->Save->Location = System::Drawing::Point(235, 25);
-			this->Save->Name = L"Save";
-			this->Save->Size = System::Drawing::Size(101, 28);
-			this->Save->TabIndex = 14;
-			this->Save->Text = L"SAVE";
-			this->Save->UseVisualStyleBackColor = true;
-			this->Save->Click += gcnew System::EventHandler(this, &Form1::Save_Click);
+			this->btn_Save->ForeColor = System::Drawing::Color::Maroon;
+			this->btn_Save->ImageAlign = System::Drawing::ContentAlignment::TopLeft;
+			this->btn_Save->Location = System::Drawing::Point(235, 25);
+			this->btn_Save->Name = L"btn_Save";
+			this->btn_Save->Size = System::Drawing::Size(101, 28);
+			this->btn_Save->TabIndex = 14;
+			this->btn_Save->Text = L"SAVE";
+			this->btn_Save->UseVisualStyleBackColor = true;
+			this->btn_Save->Click += gcnew System::EventHandler(this, &Form1::btn_Save_Click);
 			// 
 			// label7
 			// 
@@ -271,20 +274,20 @@ namespace CppCLRWinformsProjekt {
 			this->searchtext->Size = System::Drawing::Size(136, 24);
 			this->searchtext->TabIndex = 16;
 			// 
-			// Search
+			// btn_Search
 			// 
-			this->Search->Font = (gcnew System::Drawing::Font(L"Britannic Bold", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->btn_Search->Font = (gcnew System::Drawing::Font(L"Britannic Bold", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Search->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(128)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
+			this->btn_Search->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(128)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(0)));
-			this->Search->ImageAlign = System::Drawing::ContentAlignment::TopLeft;
-			this->Search->Location = System::Drawing::Point(235, 69);
-			this->Search->Name = L"Search";
-			this->Search->Size = System::Drawing::Size(101, 28);
-			this->Search->TabIndex = 17;
-			this->Search->Text = L"SEARCH";
-			this->Search->UseVisualStyleBackColor = true;
-			this->Search->Click += gcnew System::EventHandler(this, &Form1::Search_Click);
+			this->btn_Search->ImageAlign = System::Drawing::ContentAlignment::TopLeft;
+			this->btn_Search->Location = System::Drawing::Point(235, 69);
+			this->btn_Search->Name = L"btn_Search";
+			this->btn_Search->Size = System::Drawing::Size(101, 28);
+			this->btn_Search->TabIndex = 17;
+			this->btn_Search->Text = L"SEARCH";
+			this->btn_Search->UseVisualStyleBackColor = true;
+			this->btn_Search->Click += gcnew System::EventHandler(this, &Form1::btn_Search_Click);
 			// 
 			// status_lbl
 			// 
@@ -315,8 +318,8 @@ namespace CppCLRWinformsProjekt {
 			// 
 			this->groupBox1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->groupBox1->Controls->Add(this->pbarstatus);
-			this->groupBox1->Controls->Add(this->Save);
-			this->groupBox1->Controls->Add(this->Search);
+			this->groupBox1->Controls->Add(this->btn_Save);
+			this->groupBox1->Controls->Add(this->btn_Search);
 			this->groupBox1->Controls->Add(this->status_lbl);
 			this->groupBox1->Controls->Add(this->searchtext);
 			this->groupBox1->Controls->Add(this->label7);
@@ -402,11 +405,11 @@ namespace CppCLRWinformsProjekt {
 
 		}
 #pragma endregion
-	private: System::Void Search_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void btn_Search_Click(System::Object^ sender, System::EventArgs^ e) {
 		//VP- the connection string which has information to connect to database
 		String^ constring = "datasource= localhost;port=3306;username=root;password=Incredible1!";
 		//VP- SQL Query to perform action on table
-		String^ myQuery = L"select * from example.candidateinfo where (Name LIKE'" + this->searchtext->Text + "%');";
+		String^ myQuery = L"select * from example.candidateinfo where (Name LIKE'%" + this->searchtext->Text + "%');";
 		//VP- Initialize connection object
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
 		//VP- Initialize command/query object
@@ -456,7 +459,7 @@ namespace CppCLRWinformsProjekt {
 			}
 		}
 	}
-	private: System::Void Save_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void btn_Save_Click(System::Object^ sender, System::EventArgs^ e) {
 
 		String^ constring = L"datasource= localhost;port=3306;username=root;password=Incredible1!";
 		MySqlConnection^ conDatabase = gcnew MySqlConnection(constring);
@@ -547,6 +550,19 @@ namespace CppCLRWinformsProjekt {
 			}
 		}
 	}
-	};
+	private: System::Void notext_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e) {
+		if (e->KeyChar >= '0' && e->KeyChar <= '9' || e->KeyChar == 8)
+		//The  character 8 represents a backspace
+		{
+			//Do not reject the input
+			e->Handled = false;
+		}
+		else
+		{
+			//Reject the input
+			e->Handled = true; 
+		}
+	}
+};
 }
 
