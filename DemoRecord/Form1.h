@@ -501,8 +501,9 @@ namespace CppCLRWinformsProjekt {
 						notext->Focus();
 						bDuplicate_count = true;
 						status_lbl->ResetText();
+						break;
 					}
-					break;
+					
 				}
 				//VP- If no duplicate record found
 				if (!bDuplicate_count)
